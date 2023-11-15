@@ -1,55 +1,39 @@
-import  { useEffect, useState } from 'react';
-import { fetchData, exerciseOptions } from '../utils/fetchData';
 
-export default function SearchExercises({ setExercises }) {
-  const [inputValue, setInputValue] = useState('');
+import { useState } from "react";
 
-  const [search, setSearch] = useState('');
-  const [bodyParts, setBodyParts] = useState([]);
+export default function SearchExercises({ onSearch }) {
+  const [bodyPart, setBodyPart] = useState("");
 
-  useEffect(() => {
-    const fetchBodyParts = async () => {
-      const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
-      setBodyParts(['all', ...bodyPartsData]);
-    };
-
-    fetchBodyParts();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await handleSearch();
-  };
-
-  const handleSearch = async () => {
-    if (search) {
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
-
-      const searchedExercises = exercisesData.filter(
-        (item) =>
-          item.name.toLowerCase().includes(search.toLowerCase()) ||
-          item.target.toLowerCase().includes(search.toLowerCase()) ||
-          item.equipment.toLowerCase().includes(search.toLowerCase()) ||
-          item.bodyPart.toLowerCase().includes(search.toLowerCase())
-      );
-
-      setSearch('');
-      setExercises(searchedExercises);
-    }
+  const handleSearchClick = () => {
+    // Trigger the search with the selected body part
+    onSearch(bodyPart);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="my-4 mx-auto max-w-md">
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter body part"
-      />
-      <button type="submit" className="block mx-auto mt-2 bg-blue-500 text-white py-2 px-4 rounded-md">
-        Search
-      </button>
-    </form>
+    <div className="mt-8 mx-4">
+      <label className="block text-gray-700 text-sm font-bold mb-2">
+        Select Body Part:
+      </label>
+      <div className="flex items-center">
+        <select
+          className="appearance-none border rounded w-full py-2 px-3 mr-4 leading-tight focus:outline-none focus:shadow-outline"
+          onChange={(e) => setBodyPart(e.target.value)}
+        >
+          <option value="chest">Chest</option>
+          <option value="legs">Legs</option>
+          <option value="chest">Back</option>
+          <option value="legs">Cardio</option>
+          <option value="chest">Abs</option>
+          <option value="legs">Arms</option>
+
+        </select>
+        <button
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={handleSearchClick}
+        >
+          Search
+        </button>
+      </div>
+    </div>
   );
 }

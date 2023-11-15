@@ -24,11 +24,11 @@ export default function Exercises() {
       .catch(error => console.error('Error fetching data:', error));
   };
 
-  const handleSearch = () => {
-    console.log('Search clicked');
-    
-    // Perform the search based on the searchTerm
-    fetch(`https://exercisedb.p.rapidapi.com/exercises/search?name=${searchTerm}`, {
+  const handleSearch = (bodyPart) => {
+    console.log('Search clicked for body part:', bodyPart);
+
+    // Perform the search based on the bodyPart
+    fetch(`https://exercisedb.p.rapidapi.com/exercises/search?part=${bodyPart}`, {
       headers: {
         'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
         'X-RapidAPI-Key': '8a4f5a6ca5msh2da4b416502f1bap175610jsn6ff0cd998571'
@@ -57,7 +57,7 @@ export default function Exercises() {
             <div className="p-4">
               <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
               <p>{item.description}</p>
-              <img src={item.gifUrl} alt="" />
+              {item.gifUrl && <img src={item.gifUrl} alt="" />}
             </div>
           </div>
         ))}
