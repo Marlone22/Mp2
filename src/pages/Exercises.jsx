@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import SearchExercises from "../components/SearchExercises";
 
 export default function Exercises() {
   const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+
 
   useEffect(() => {
     fetchData();
@@ -24,24 +23,6 @@ export default function Exercises() {
       .catch(error => console.error('Error fetching data:', error));
   };
 
-  const handleSearch = (bodyPart) => {
-    console.log('Search clicked for body part:', bodyPart);
-
-    // Perform the search based on the bodyPart
-    fetch(`https://exercisedb.p.rapidapi.com/exercises/search?part=${bodyPart}`, {
-      headers: {
-        'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
-        'X-RapidAPI-Key': '8a4f5a6ca5msh2da4b416502f1bap175610jsn6ff0cd998571'
-      }
-    })
-      .then(response => response.json())
-      .then(json => {
-        console.log('Search Result:', json);
-        setData(json);
-      })
-      .catch(error => console.error('Error fetching search data:', error));
-  };
-
   return (
     <>
       <div className="bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
@@ -49,7 +30,7 @@ export default function Exercises() {
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">Exercises</h1>
         </div>
       </div>
-      <SearchExercises onSearch={handleSearch} setSearchTerm={setSearchTerm} />
+
 
       <div className="flex flex-wrap justify-center p-4">
         {data.map((item, i) => (
